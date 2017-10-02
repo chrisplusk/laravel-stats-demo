@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatsDailyHourlyYyyyMmTable extends Migration
+class CreateStatsYyyyMmTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStatsDailyHourlyYyyyMmTable extends Migration
      */
     public function up()
     {
-        Schema::create('stats_daily_hourly_yyyy_mm', function (Blueprint $table) {
+        Schema::create('stats_yyyy_mm', function (Blueprint $table) {
             $table->tinyInteger('day')->unsigned();
             $table->tinyInteger('hour')->unsigned();
             $table->datetime('date');
@@ -22,7 +22,7 @@ class CreateStatsDailyHourlyYyyyMmTable extends Migration
             $table->integer('label_id');
             $table->integer('value');
             
-            $table->primary(['day', 'hour', 'client_id', 'category_id', 'label_id'], 'stats_daily_hourly_yyyy_mm_primary');
+            $table->primary(['day', 'hour', 'client_id', 'category_id', 'label_id'], 'stats_yyyy_mm_primary');
             $table->index('day');
             $table->index('hour');
             $table->index('client_id');
@@ -40,6 +40,6 @@ class CreateStatsDailyHourlyYyyyMmTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stats_daily_hourly_yyyy_mm');
+        Schema::dropIfExists('stats_yyyy_mm');
     }
 }
