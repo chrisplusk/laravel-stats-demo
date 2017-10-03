@@ -14,7 +14,17 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr><th>Date</th><th>Value</th></tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($stats as $row) { ?>
+                            <tr><td>{{ $row->date }}</td><td>{{ $row->value }}</td></tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
