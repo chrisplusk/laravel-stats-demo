@@ -11,15 +11,17 @@ class StatsSeeder extends Seeder
      */
     public function run()
     {
+        $table = DB::table('stats_'.date('Y').'_'.date('m'));
+        
         $now    = date('Y-m-d H:i:s');
 
-        $date = DB::table('stats_'.date('Y').'_'.date('m'))->max('date') ?: date('Y-m-01 00:00:00');
+        $date = $table->max('date') ?: date('Y-m-01 00:00:00');
         
         while ( strtotime($date) < strtotime($now) )
         {
             $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($date)) . ' +1 hour') );
             
-            DB::table('stats_'.date('Y').'_'.date('m'))->insert([
+            $table->insert([
                 'day'           => date('d', strtotime($date)),
                 'hour'          => date('H', strtotime($date)),
                 'date'          => date('Y-m-d H:i:s', strtotime($date)),
