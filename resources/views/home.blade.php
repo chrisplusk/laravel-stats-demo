@@ -13,6 +13,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    
+                    <canvas id="chart" width="600" height="300"></canvas>
 
                     <table class="table table-striped table-hover">
                         <thead>
@@ -30,4 +32,24 @@
         </div>
     </div>
 </div>
-@endsection
+@stop
+
+@section('scripts')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+
+    <script>
+        (function() {
+            var ctx = document.getElementById('chart').getContext('2d');
+            var chart = {
+                labels: {{ json_encode($labels) }},
+                datasets: [{
+                    data: {{ json_encode($values) }},
+                    fillColor : "#f8b1aa",
+                    strokeColor : "#bb574e",
+                    pointColor : "#bb574e"
+                }]
+            };
+            new Chart(ctx).Bar(chart, { bezierCurve: false });
+        })();
+    </script>
+@stop

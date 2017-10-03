@@ -27,6 +27,19 @@ class HomeController extends Controller
     {
         $stats = DB::table('stats_'.date('Y').'_'.date('m'))->get();
 
-        return view('home', ['stats' => $stats]);
+        $labels = [];
+        $values = [];
+        
+        foreach($stats as $row)
+        {
+            $labels[] = $row->label_id;
+            $values[] = $row->value;
+        }
+        
+        return view('home', [
+                                'stats' => $stats,
+                                'labels' => $labels,
+                                'values' => $values,
+                            ]);
     }
 }
