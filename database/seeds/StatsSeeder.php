@@ -12,9 +12,10 @@ class StatsSeeder extends Seeder
     public function run()
     {
         $now    = date('Y-m-d H:i:s');
-        $date   = date('Y-m-01 00:00:00'); //TODO: select latest date from table
 
-        while ( strtotime($date) < strtotime($now) && date('m',strtotime($date)) <= date('m', strtotime($now)) )
+        $date = DB::table('stats_'.date('Y').'_'.date('m'))->max('date') ?: date('Y-m-01 00:00:00');
+        
+        while ( strtotime($date) < strtotime($now) )
         {
             $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($date)) . ' +1 hour') );
             
