@@ -9,3 +9,5 @@ Todo:
 - some more charts
 - press button to seed data
 - jquery filter
+- jquery table sorting
+- table totals
