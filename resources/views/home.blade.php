@@ -14,24 +14,46 @@
                         </div>
                     @endif
                     
-                    <canvas id="doughnut_chart" style="float: left;" width="300" height="150"></canvas>
+                    <div class="row">
+                        <div class="col">
+                            
+                            <canvas id="doughnut_chart" style="float: left;" width="300" height="150"></canvas>
 
-                    <canvas id="line_chart" style="float: left;" width="500" height="300"></canvas>
+                        </div>
+                        <div class="col">
 
-                    <canvas id="bar_chart" style="float: right;" width="300" height="150"></canvas>
+                            <canvas id="line_chart" style="float: left;" width="500" height="300"></canvas>
+                        
+                        </div>
+                        <div class="col">
+
+                            <canvas id="bar_chart" style="float: right;" width="300" height="150"></canvas>
+                            
+                        </div>
+                    </div>
                     
-                    <!-- <button id="seed">Seed</button> -->
-
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr><th>Date</th><th>Value</th></tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach($stats as $row) { ?>
-                            <tr><td>{{ $row->date }}</td><td>{{ $row->value }}</td></tr>
-                        <?php } ?>
-                        </tbody>
-                    </table>
+                    <div class="row justify-content-center">
+                        <div class="col">
+                        
+                            <button id="seed">Seed</button>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                    
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr><th>Date</th><th>Category</th><th>Client</th><th>Label</th><th>Value</th></tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach($stats as $row) { ?>
+                                <tr><td>{{ $row->date }}</td><td>{{ $row->category_id }}</td><td>{{ $row->client_id }}</td><td>{{ $row->label_id }}</td><td>{{ $row->value }}</td></tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    
+                    </div>
                     
                 </div>
             </div>
@@ -62,12 +84,12 @@
                         datasets: [{
                             data: data.values,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
+                                'rgba(255, 99, 132, 0.5)',
+                                'rgba(54, 162, 235, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
                             ],
                             borderColor: 'rgba(75, 192, 192, 0.5)',
                             fill: false,
@@ -94,12 +116,12 @@
                         datasets: [{
                             data: data.values,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
+                                'rgba(255, 99, 132, 0.5)',
+                                'rgba(54, 162, 235, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
                             ],
                             borderColor: 'rgba(75, 192, 192, 0.5)',
                             fill: false,
@@ -138,12 +160,12 @@
                         datasets: [{
                             data: data.values,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
+                                'rgba(255, 99, 132, 0.5)',
+                                'rgba(54, 162, 235, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
                             ],
                             borderColor: 'rgba(75, 192, 192, 0.5)',
                             fill: false,
