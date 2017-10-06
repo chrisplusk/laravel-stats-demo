@@ -20,7 +20,7 @@
 
                     <canvas id="bar_chart" style="float: right;" width="300" height="150"></canvas>
                     
-                    <button id="seed">Seed</button>
+                    <!-- <button id="seed">Seed</button> -->
 
                     <table class="table table-striped table-hover">
                         <thead>
@@ -47,56 +47,124 @@
 
         $( document ).ready(function() {
             
-            var barChartData = {
-                labels: {{ json_encode($labels) }},
-                datasets: [{
-                    data: {{ json_encode($values) }},
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: 'rgba(75, 192, 192, 0.5)',
-                    fill: false,
-                    pointBackgroundColor: 'rgba(75, 192, 192, 0.5)'
-                }]
-            };
-
             var doughnut_ctx    = $('#doughnut_chart')[0].getContext('2d');
             var line_ctx        = $('#line_chart')[0].getContext('2d');
             var bar_ctx         = $('#bar_chart')[0].getContext('2d');
             
-            var doughnutChart = new Chart(doughnut_ctx, {
-                type: 'doughnut',
-                data: barChartData,
-                options: {
-                    legend: { display: false, },
-                    title: { display: false, },
-                    responsive: false,
-                }
+            $.ajax({
+                url: "home/doughnut"
+            }).done(function( data ) {
+                
+                var doughnutChart = new Chart(doughnut_ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: 'rgba(75, 192, 192, 0.5)',
+                            fill: false,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 0.5)'
+                        }]
+                    },
+                    options: {
+                        legend: { display: false, },
+                        title: { display: false, },
+                        responsive: false,
+                    }
+                });
+                
             });
-        
-            var lineChart = new Chart(line_ctx, {
-                type: 'line',
-                data: barChartData,
-                options: {
-                    legend: { display: false, },
-                    title: { display: false, },
-                    responsive: false,
-                }
+            
+            $.ajax({
+                url: "home/line"
+            }).done(function( data ) {
+                
+                var lineChart = new Chart(line_ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: 'rgba(75, 192, 192, 0.5)',
+                            fill: false,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 0.5)'
+                        }]
+                    },
+                    options: {
+                        legend: { display: false, },
+                        title: { display: false, },
+                        responsive: false,
+                        scales: {
+                            xAxes: [{
+                                        gridLines: {
+                                            display:false
+                                        }
+                                    }],
+                            yAxes: [{
+                                        gridLines: {
+                                            display:true
+                                        }   
+                                    }]
+                        }
+                    }
+                });
+                
             });
-        
-            var barChart = new Chart(bar_ctx, {
-                type: 'bar',
-                data: barChartData,
-                options: {
-                    legend: { display: false, },
-                    title: { display: false, },
-                    responsive: false,
-                }
+            
+            $.ajax({
+                url: "home/bar"
+            }).done(function( data ) {
+                
+                var barChart = new Chart(bar_ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: 'rgba(75, 192, 192, 0.5)',
+                            fill: false,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 0.5)'
+                        }]
+                    },
+                    options: {
+                        legend: { display: false, },
+                        title: { display: false, },
+                        responsive: false,
+                        scales: {
+                            xAxes: [{
+                                display: false
+                              }],
+                              yAxes: [{
+                                display: false
+                              }],
+                        }
+                    }
+                });
+                
             });
         
             $('#seed').click(function () {

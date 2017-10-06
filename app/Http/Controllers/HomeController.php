@@ -26,6 +26,40 @@ class HomeController extends Controller
     public function index()
     {
         $stats = DB::table('stats_'.date('Y').'_'.date('m'))->get();
+        
+        return view('home', [
+                                'stats' => $stats,
+                            ]);
+    }
+    
+    public function doughnut()
+    {
+        $stats = DB::table('stats_'.date('Y').'_'.date('m'))
+            ->select('category_id', DB::raw('SUM(value) as value'))
+            ->groupBy('category_id')
+            ->get();
+
+        $labels = [];
+        $values = [];
+        
+        foreach($stats as $row)
+        {
+            $labels[] = $row->category_id;
+            $values[] = $row->value;
+        }
+        
+        return response()->json([
+                    'labels' => $labels,
+                    'values' => $values,
+                ]);
+    }
+    
+    public function bar()
+    {
+        $stats = DB::table('stats_'.date('Y').'_'.date('m'))
+            ->select('label_id', DB::raw('SUM(value) as value'))
+            ->groupBy('label_id')
+            ->get();
 
         $labels = [];
         $values = [];
@@ -36,10 +70,28 @@ class HomeController extends Controller
             $values[] = $row->value;
         }
         
-        return view('home', [
-                                'stats' => $stats,
-                                'labels' => $labels,
-                                'values' => $values,
-                            ]);
+        return response()->json([
+                    'labels' => $labels,
+                    'values' => $values,
+                ]);
+    }
+    
+    public function line()
+    {
+        $stats = DB::table('stats_'.date('Y').'_'.date('m'))->get();
+
+        $labels = [];
+        $values = [];
+        
+        foreach($stats as $row)
+        {
+            $labels[] = $row->day;
+            $values[] = $row->value;
+        }
+        
+        return response()->json([
+                    'labels' => $labels,
+                    'values' => $values,
+                ]);
     }
 }
