@@ -60,6 +60,11 @@ class HomeController extends Controller
                             ]);
     }
     
+    public function apply()
+    {
+        return ['1'];
+    }
+    
     public function doughnut()
     {
         $stats = DB::table('stats_'.date('Y').'_'.date('m'))

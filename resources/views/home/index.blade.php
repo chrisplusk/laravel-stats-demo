@@ -14,11 +14,11 @@
                         </div>
                     @endif
                     
-                    <div id="filter">
+                    <div id="filter" style="display: none;">
                         
                     </div>
-                    <div id="filterbutton" class="row">
-                        <button style="width: 100%;">Apply</button>
+                    <div class="row">
+                        <button id="filterbutton" style="width: 100%;">Filter</button>
                     </div>
                 
                     <div class="row">
@@ -71,6 +71,26 @@
                 url: "home/table"
             }).done(function( data ) {
                 $('#stats').html(data);
+            });
+            
+            $('#filterbutton').click(function() {
+                $('#filterbutton').html( $('#filter').is(':visible') ? 'Filter' : 'Apply' );
+                
+                if ($('#filter').is(':visible'))
+                {
+                    //$('#filter_form').submit();
+                    $.ajax({
+                       type: "POST",
+                       url: $('#filter_form').attr('action'),
+                       data: $("#filter_form").serialize(), // serializes the form's elements.
+                       success: function(data)
+                       {
+                           //alert(data); // show response from the php script.
+                       }
+                     });
+                }
+                
+                $('#filter').slideToggle();
             });
             
             var doughnut_ctx    = $('#doughnut_chart')[0].getContext('2d');

@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/home/filter', 'HomeController@filter');
+        Route::post('/home/apply', 'HomeController@apply');
     Route::get('/home/table', 'HomeController@table');
     Route::get('/home/doughnut', 'HomeController@doughnut');
     Route::get('/home/line', 'HomeController@line');
