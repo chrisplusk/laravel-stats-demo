@@ -4,7 +4,7 @@
 
             <div class='col-md-6'>
                 <div class="form-group">
-                    <div class='input-group date' id='datetimepicker6'>
+                    <div class='input-group date' id='datetimepicker_start'>
                         <input type='text' class="form-control" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -14,7 +14,7 @@
             </div>
             <div class='col-md-6'>
                 <div class="form-group">
-                    <div class='input-group date' id='datetimepicker7'>
+                    <div class='input-group date' id='datetimepicker_end'>
                         <input type='text' class="form-control" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -68,19 +68,15 @@
     
 </div>
 
-
-
 <script type="text/javascript">
     $(function () {
-        $('#datetimepicker6').datetimepicker();
-        $('#datetimepicker7').datetimepicker({
-            useCurrent: false //Important! See issue #1075
+        $('#datetimepicker_start').datepicker();
+        $('#datetimepicker_end').datepicker();
+        $("#datetimepicker_start").datepicker().on('changeDate', function(e) {
+            $("#datetimepicker_end").datepicker('setStartDate', e.date);
         });
-        $("#datetimepicker6").on("dp.change", function (e) {
-            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        $("#datetimepicker_end").datepicker().on('changeDate', function(e) {
+            $("#datetimepicker_start").datepicker('setEndDate', e.date);
         });
     });
 </script>

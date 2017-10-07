@@ -22,17 +22,17 @@
                     </div>
                 
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-3">
                             
                             <canvas id="doughnut_chart" style="float: left;" width="300" height="150"></canvas>
 
                         </div>
-                        <div class="col">
+                        <div class="col-md-6">
 
                             <canvas id="line_chart" style="float: left;" width="500" height="300"></canvas>
                         
                         </div>
-                        <div class="col">
+                        <div class="col-md-3">
 
                             <canvas id="bar_chart" style="float: right;" width="300" height="150"></canvas>
                             
