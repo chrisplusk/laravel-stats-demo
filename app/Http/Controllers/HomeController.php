@@ -25,10 +25,38 @@ class HomeController extends Controller
      */
     public function index()
     {
+        return view('home/index');
+    }
+    
+    public function table()
+    {
+        
         $stats = DB::table('stats_'.date('Y').'_'.date('m'))->get();
         
-        return view('home', [
+        return view('home/table', [
                                 'stats' => $stats,
+                            ]);
+    }
+    
+    public function filter()
+    {
+        $clients = DB::table('stats_'.date('Y').'_'.date('m'))
+            ->select('client_id')
+            ->groupBy('client_id')
+            ->get();
+        $categories = DB::table('stats_'.date('Y').'_'.date('m'))
+            ->select('category_id')
+            ->groupBy('category_id')
+            ->get();
+        $labels = DB::table('stats_'.date('Y').'_'.date('m'))
+            ->select('label_id')
+            ->groupBy('label_id')
+            ->get();
+        
+        return view('home/filter', [
+                                'clients' => $clients,
+                                'categories' => $categories,
+                                'labels' => $labels,
                             ]);
     }
     

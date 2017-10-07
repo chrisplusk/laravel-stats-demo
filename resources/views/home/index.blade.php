@@ -14,6 +14,13 @@
                         </div>
                     @endif
                     
+                    <div id="filter">
+                        
+                    </div>
+                    <div id="filterbutton" class="row">
+                        <button style="width: 100%;">Apply</button>
+                    </div>
+                
                     <div class="row">
                         <div class="col">
                             
@@ -32,26 +39,11 @@
                         </div>
                     </div>
                     
-                    <div class="row justify-content-center">
-                        <div class="col">
-                        
-                            <button id="seed">Seed</button>
-                            
-                        </div>
+                    <div id="seedbutton" class="row">
+                        <button style="width: 100%;">Seed</button>
                     </div>
                     
-                    <div class="row">
-                    
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr><th>Date</th><th>Category</th><th>Client</th><th>Label</th><th>Value</th></tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach($stats as $row) { ?>
-                                <tr><td>{{ $row->date }}</td><td>{{ $row->category_id }}</td><td>{{ $row->client_id }}</td><td>{{ $row->label_id }}</td><td>{{ $row->value }}</td></tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
+                    <div id="stats" class="row">
                     
                     </div>
                     
@@ -68,6 +60,18 @@
     <script>
 
         $( document ).ready(function() {
+            
+            $.ajax({
+                url: "home/filter"
+            }).done(function( data ) {
+                $('#filter').html(data);
+            });
+            
+            $.ajax({
+                url: "home/table"
+            }).done(function( data ) {
+                $('#stats').html(data);
+            });
             
             var doughnut_ctx    = $('#doughnut_chart')[0].getContext('2d');
             var line_ctx        = $('#line_chart')[0].getContext('2d');

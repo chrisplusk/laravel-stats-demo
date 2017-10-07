@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home/filter', 'HomeController@filter');
+    Route::get('/home/table', 'HomeController@table');
     Route::get('/home/doughnut', 'HomeController@doughnut');
     Route::get('/home/line', 'HomeController@line');
     Route::get('/home/bar', 'HomeController@bar');
