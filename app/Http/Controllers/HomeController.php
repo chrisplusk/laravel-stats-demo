@@ -12,21 +12,11 @@ use \Session;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //var_dump(Session::get('filter'));
@@ -59,10 +49,19 @@ class HomeController extends Controller
             ->groupBy('label_id')
             ->get();
         
+        $selected = json_decode(Session::get('filter'));
+        
         return view('home/filter', [
                                 'clients' => $clients,
                                 'categories' => $categories,
                                 'labels' => $labels,
+                                'selected_start_date' => $selected->start_date,
+                                'selected_end_date' => $selected->end_date,
+                                'selected_client_id' => $selected->client_id,
+                                'selected_categories' => (is_array($selected->categories) ? $selected->categories : []),
+                                'selected_labels' => (is_array($selected->labels) ? $selected->labels : []),
+                                'selected_value_equals' => $selected->value_equals,
+                                'selected_value' => $selected->value,
                             ]);
     }
     
@@ -78,7 +77,7 @@ class HomeController extends Controller
             'value'         => Input::get('value'),
         ]));
         
-        return true;
+        return [true];
     }
     
     public function doughnut()

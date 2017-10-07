@@ -9,7 +9,7 @@
                 <div class='col-md-6'>
                     <div class="form-group">
                         <div class='input-group date' id='datetimepicker_start'>
-                            <input name="start_date" type='text' class="form-control" />
+                            <input name="start_date" type='text' class="form-control" value="{{ $selected_start_date }}" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -19,7 +19,7 @@
                 <div class='col-md-6'>
                     <div class="form-group">
                         <div class='input-group date' id='datetimepicker_end'>
-                            <input name="end_date" type='text' class="form-control" />
+                            <input name="end_date" type='text' class="form-control" value="{{ $selected_end_date }}" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -37,25 +37,25 @@
 
             <select name="client_id" style="width: 100%;">
               <?php foreach($clients as $client) { ?>
-                    <option>Client {{ $client->client_id }}</option>
+                    <option value="{{ $client->client_id }}" {{{ $client->client_id == $selected_client_id ? 'selected' : '' }}} >Client {{ $client->client_id }}</option>
                 <?php } ?>
             </select>
 
         </div>
         <div class="col-md-3">
 
-            <select name="categories" multiple style="width: 100%;">
+            <select name="categories[]" multiple style="width: 100%;">
               <?php foreach($categories as $category) { ?>
-                    <option>Category {{ $category->category_id }}</option>
+                    <option value="{{ $category->category_id }}" {{{ in_array($category->category_id, $selected_categories) ? 'selected' : '' }}} >Category {{ $category->category_id }}</option>
                 <?php } ?>
             </select>
 
         </div>
         <div class="col-md-3">
 
-            <select name="labels" multiple style="width: 100%;">
+            <select name="labels[]" multiple style="width: 100%;">
               <?php foreach($labels as $label) { ?>
-                    <option>Label {{ $label->label_id }}</option>
+                    <option value="{{ $label->label_id }}" {{{ in_array($label->label_id, $selected_labels) ? 'selected' : '' }}} >Label {{ $label->label_id }}</option>
                 <?php } ?>
             </select>
 
@@ -63,11 +63,11 @@
         <div class="col-md-3">
 
             <select name="value_equals">
-                <option>Value &lt;=</option>
-                <option>Value &gt;=</option>
+                <option value="ltoe" {{{ 'ltoe' == $selected_value_equals ? 'selected' : '' }}} >Value &lt;=</option>
+                <option value="gtoe" {{{ 'gtoe' == $selected_value_equals ? 'selected' : '' }}} >Value &gt;=</option>
             </select>
 
-            <input name="value" type="text" />
+            <input name="value" value="{{ $selected_value }}" type="text" />
 
         </div>
 
