@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 
+use \Input;
+
+use \Session;
+
 class HomeController extends Controller
 {
     /**
@@ -25,6 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //var_dump(Session::get('filter'));
+        
         return view('home/index');
     }
     
@@ -62,7 +68,17 @@ class HomeController extends Controller
     
     public function apply()
     {
-        return ['1'];
+        Session::put('filter', json_encode([
+            'start_date'    => Input::get('start_date'),
+            'end_date'      => Input::get('end_date'),
+            'client_id'     => Input::get('client_id'),
+            'categories'    => Input::get('categories'),
+            'labels'        => Input::get('labels'),
+            'value_equals'  => Input::get('value_equals'),
+            'value'         => Input::get('value'),
+        ]));
+        
+        return true;
     }
     
     public function doughnut()

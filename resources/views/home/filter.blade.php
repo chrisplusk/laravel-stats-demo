@@ -62,7 +62,7 @@
         </div>
         <div class="col-md-3">
 
-            <select name="value_equal">
+            <select name="value_equals">
                 <option>Value &lt;=</option>
                 <option>Value &gt;=</option>
             </select>
