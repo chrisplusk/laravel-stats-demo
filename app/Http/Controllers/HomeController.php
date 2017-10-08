@@ -18,7 +18,7 @@ class HomeController extends Controller
     }
 
     public function index()
-    {        
+    {       
         return view('home/index');
     }
     
@@ -40,21 +40,34 @@ class HomeController extends Controller
         $selected = $this->getSelection();
         
         if (false === empty($selected->start_date))
+        {
             $query->where('date', '>=', date('Y-m-d H:i:s',strtotime($selected->start_date)));
+        }
         if (false === empty($selected->end_date))
+        {
             $query->where('date', '<=', date('Y-m-d 23:59:59',strtotime($selected->end_date)));
+        }
         
         if ($selected->client_id != 0)
+        {
+            
             $query->where('client_id', '=', $selected->client_id);
+        }
         
-        if (is_array($selected->categories))
+        if (is_array($selected->categories) && false == empty($selected->categories))
+        {
             $query->whereIn('category_id', $selected->categories);
+        }
         
-        if (is_array($selected->labels))
+        if (is_array($selected->labels) && false == empty($selected->labels))
+        {
             $query->whereIn('label_id', $selected->labels);
+        }
         
         if (false === empty($selected->value))
+        {
             $query->where('value', $selected->value_equals == 'ltoe' ? '<=' : '>=', $selected->value);
+        }
         
         return $query;
     }
@@ -63,7 +76,7 @@ class HomeController extends Controller
     {
         
         $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m')) );
-        
+          
         return view('home/table', [
                                 'stats' => $stats->get(),
                             ]);
