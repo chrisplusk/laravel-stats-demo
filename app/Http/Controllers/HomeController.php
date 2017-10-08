@@ -49,7 +49,9 @@ class HomeController extends Controller
             ->groupBy('label_id')
             ->get();
         
-        $selected = json_decode(Session::get('filter'));
+        $selected = json_decode(Session::get('filter')) ?: new class {
+            public $start_date = '', $end_date = '', $client_id = 0, $categories = [], $labels = [], $value_equals = '', $value = '';
+        };
         
         return view('home/filter', [
                                 'clients' => $clients,
