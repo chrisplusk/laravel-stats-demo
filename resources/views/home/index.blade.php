@@ -85,7 +85,7 @@
                     url: "home/doughnut"
                 }).done(function( data ) {
 
-                    var doughnutChart = new Chart(doughnut_ctx, {
+                    doughnutChart = new Chart(doughnut_ctx, {
                         type: 'doughnut',
                         data: {
                             labels: data.labels,
@@ -119,7 +119,7 @@
                     url: "home/line"
                 }).done(function( data ) {
 
-                    var lineChart = new Chart(line_ctx, {
+                    lineChart = new Chart(line_ctx, {
                         type: 'line',
                         data: {
                             labels: data.labels,
@@ -165,7 +165,7 @@
                     url: "home/bar"
                 }).done(function( data ) {
 
-                    var barChart = new Chart(bar_ctx, {
+                    barChart = new Chart(bar_ctx, {
                         type: 'bar',
                         data: {
                             labels: data.labels,
@@ -219,9 +219,9 @@
                      });
                     
                     setTimeout(table_ajax, 500);
-                    setTimeout(doughnut_ajax, 500);
-                    setTimeout(line_ajax, 500);
-                    setTimeout(bar_ajax, 500);
+                    setTimeout(function() { doughnutChart.destroy(); doughnut_ajax(); }, 500);
+                    setTimeout(function() { lineChart.destroy(); line_ajax(); }, 500);
+                    setTimeout(function() { barChart.destroy(); bar_ajax(); }, 500);
                 }
                 
                 $('#filter').slideToggle();
