@@ -39,8 +39,8 @@
                         </div>
                     </div>
                     
-                    <div id="seedbutton" class="row">
-                        <button style="width: 100%;">Seed</button>
+                    <div class="row">
+                        <button id="seedbutton" style="width: 100%;">Seed</button>
                     </div>
                     
                     <div id="stats" class="row">
@@ -208,14 +208,13 @@
                 
                 if ($('#filter').is(':visible'))
                 {
-                    //$('#filter_form').submit();
                     $.ajax({
                        type: "POST",
                        url: $('#filter_form').attr('action'),
-                       data: $("#filter_form").serialize(), // serializes the form's elements.
+                       data: $("#filter_form").serialize(),
                        success: function(data)
                        {
-                           //alert(data); // show response from the php script.
+                           //
                        }
                      });
                     
@@ -233,16 +232,17 @@
             line_ajax();
             bar_ajax();
             
-            $('#seed').click(function () {
-                barChartData.labels.shift();
-                barChartData.datasets[0].data.shift();
+            $('#seedbutton').click(function () {
+                $.ajax({
+                    url: "home/seed"
+                }).done(function( data ) {
+                    //
+                });
                 
-                barChartData.labels.push('#');
-                barChartData.datasets[0].data.push( Math.round(Math.random() * 1000) );
-                
-                doughnutChart.update();
-                lineChart.update();
-                barChart.update();
+                table_ajax();
+                doughnutChart.destroy(); doughnut_ajax();
+                lineChart.destroy(); line_ajax();
+                barChart.destroy(); bar_ajax();
             });
             
         });

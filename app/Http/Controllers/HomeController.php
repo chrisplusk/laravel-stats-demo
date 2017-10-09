@@ -22,6 +22,15 @@ class HomeController extends Controller
         return view('home/index');
     }
     
+    public function seed()
+    {
+        $exitCode = \Artisan::call('db:seed', [
+            '--class' => 'StatsSeeder'
+        ]);
+        
+        return [$exitCode];
+    }
+    
     private function getSelection()
     {
         return json_decode(Session::get('filter')) ?: new class {

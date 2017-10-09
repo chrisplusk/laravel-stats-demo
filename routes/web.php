@@ -25,4 +25,5 @@ Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/home/line', 'HomeController@line');
     Route::get('/home/bar', 'HomeController@bar');
     
+    Route::get('/home/seed', 'HomeController@seed');
 
