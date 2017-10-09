@@ -67,10 +67,11 @@
                 $('#filter').html(data);
             });
             
-            table_ajax = function ()
+            table_ajax = function (sort)
             {
                 $.ajax({
-                    url: "home/table"
+                    url: "home/table",
+                    data: { sortBy: sort }
                 }).done(function( data ) {
                     $('#stats').html(data);
                 });

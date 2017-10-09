@@ -74,9 +74,26 @@ class HomeController extends Controller
     
     public function table()
     {
+        if (false === empty(Input::get('sortBy')))
+        {
+            if (Session::has('sortBy') && Session::get('sortBy') == Input::get('sortBy'))
+            {
+                Session::put('sortDir', Session::get('sortDir') == 'ASC' ? 'DESC' : 'ASC');
+            }
+            else
+            {
+                Session::put('sortBy', Input::get('sortBy'));
+                Session::put('sortDir', 'ASC');
+            }
+        }
         
         $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m')) );
-          
+        
+        if (Session::has('sortBy') && Session::has('sortDir'))
+        {
+            $stats->orderBy(Session::get('sortBy'), Session::get('sortDir'));
+        }
+
         return view('home/table', [
                                 'stats' => $stats->get(),
                             ]);
