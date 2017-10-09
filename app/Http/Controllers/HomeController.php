@@ -78,12 +78,12 @@ class HomeController extends Controller
         {
             if (Session::has('sortBy') && Session::get('sortBy') == Input::get('sortBy'))
             {
-                Session::put('sortDir', Session::get('sortDir') == 'ASC' ? 'DESC' : 'ASC');
+                Session::put('sortDir', Session::get('sortDir') == 'asc' ? 'desc' : 'asc');
             }
             else
             {
                 Session::put('sortBy', Input::get('sortBy'));
-                Session::put('sortDir', 'ASC');
+                Session::put('sortDir', 'asc');
             }
         }
         
@@ -96,6 +96,8 @@ class HomeController extends Controller
 
         return view('home/table', [
                                 'stats' => $stats->get(),
+                                'sortBy' => Session::has('sortBy') ? Session::get('sortBy') : '',
+                                'sortDir' => Session::has('sortDir') ? Session::get('sortDir') : ''
                             ]);
     }
     
