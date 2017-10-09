@@ -240,9 +240,9 @@
                 });
                 
                 table_ajax();
-                doughnut_ajax();
-                line_ajax();
-                bar_ajax();
+                doughnutChart.destroy(); doughnut_ajax();
+                lineChart.destroy(); line_ajax();
+                barChart.destroy(); bar_ajax();
             });
             
         });
