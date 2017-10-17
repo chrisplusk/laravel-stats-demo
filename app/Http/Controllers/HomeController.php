@@ -103,7 +103,7 @@ class HomeController extends Controller
             $stats->orderBy(Session::get('sortBy'), Session::get('sortDir'));
         }
 
-        return view('home/table', [
+        return view('home/partials/table', [
                                 'stats' => $stats->get(),
                                 'sortBy' => Session::has('sortBy') ? Session::get('sortBy') : '',
                                 'sortDir' => Session::has('sortDir') ? Session::get('sortDir') : ''
@@ -127,7 +127,7 @@ class HomeController extends Controller
         
         $selected = $this->getSelection();
         
-        return view('home/filter', [
+        return view('home/partials/filter', [
                                 'clients' => $clients,
                                 'categories' => $categories,
                                 'labels' => $labels,

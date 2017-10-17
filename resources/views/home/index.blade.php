@@ -55,8 +55,6 @@
 @stop
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
-
     <script>
 
         $( document ).ready(function() {
@@ -77,16 +75,14 @@
                 });
             }
             
-            var doughnut_ctx    = $('#doughnut_chart')[0].getContext('2d');
-            var line_ctx        = $('#line_chart')[0].getContext('2d');
-            var bar_ctx         = $('#bar_chart')[0].getContext('2d');
-            
             doughnut_ajax = function() {
                 $.ajax({
                     url: "home/doughnut"
                 }).done(function( data ) {
 
-                    doughnutChart = new Chart(doughnut_ctx, {
+                    var doughnut_ctx    = $('#doughnut_chart')[0].getContext('2d');
+    
+                    doughnutChart =  new Chart(doughnut_ctx, {
                         type: 'doughnut',
                         data: {
                             labels: data.labels,
@@ -120,6 +116,8 @@
                     url: "home/line"
                 }).done(function( data ) {
 
+                    var line_ctx        = $('#line_chart')[0].getContext('2d');
+                    
                     lineChart = new Chart(line_ctx, {
                         type: 'line',
                         data: {
@@ -166,7 +164,9 @@
                     url: "home/bar"
                 }).done(function( data ) {
 
-                    barChart = new Chart(bar_ctx, {
+                    var bar_ctx         = $('#bar_chart')[0].getContext('2d');
+
+                    barChart =  new Chart(bar_ctx, {
                         type: 'bar',
                         data: {
                             labels: data.labels,

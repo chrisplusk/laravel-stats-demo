@@ -30,7 +30,7 @@ class CreateStatsYyyyMmTable extends Migration
             $table->index('label_id');
         });
         
-        DB::statement("ALTER TABLE `stats_raw_0` comment 'blueprint table - aggregated per day per hour for year yyyy month mm'");
+        DB::statement("ALTER TABLE `stats_yyyy_mm` comment 'blueprint table - aggregated per day per hour for year yyyy month mm'");
     }
 
     /**

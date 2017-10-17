@@ -11,7 +11,13 @@ class StatsSeeder extends Seeder
      */
     public function run()
     {
-        $table = DB::table('stats_'.date('Y').'_'.date('m'));
+        $stats_yyyy_mm = 'stats_'.date('Y').'_'.date('m');
+        
+        if (false === Schema::hasTable($stats_yyyy_mm)) {
+            DB::statement('CREATE TABLE '.$stats_yyyy_mm.' LIKE stats_yyyy_mm');
+        }
+        
+        $table = DB::table($stats_yyyy_mm);
         
         $now    = date('Y-m-d H:i:s');
 
