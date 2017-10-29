@@ -11,7 +11,28 @@ class StatsSeeder extends Seeder
      */
     public function run()
     {
-        $stats_yyyy_mm = 'stats_'.date('Y').'_'.date('m');
+        $now    = date('Y-m-d H:i:s');
+
+        $mm     = date('Y-01-01 00:00:00');
+        
+        while ( strtotime($mm) < strtotime($now) )
+        {
+            $to     = date('Y-m-01 00:00:00', strtotime(date('Y-m-01 00:00:00', strtotime($mm)) . ' +1 month') );
+            
+            if ($to > $now)
+            {
+                $to = $now;
+            }
+            
+            $this->fillMonth($mm, $to);
+            
+            $mm     = date('Y-m-01 00:00:00', strtotime(date('Y-m-01 00:00:00', strtotime($mm)) . ' +1 month') );
+        }
+    }
+    
+    private function fillMonth($from, $to)
+    {
+        $stats_yyyy_mm = 'stats_'.date('Y', strtotime($from)).'_'.date('m', strtotime($from));
         
         if (false === Schema::hasTable($stats_yyyy_mm)) {
             DB::statement('CREATE TABLE '.$stats_yyyy_mm.' LIKE stats_yyyy_mm');
@@ -19,14 +40,12 @@ class StatsSeeder extends Seeder
         
         $table = DB::table($stats_yyyy_mm);
         
-        $now    = date('Y-m-d H:i:s');
-
-        $date = $table->max('date') ?: date('Y-m-01 00:00:00');
+        $max = $table->max('date');
         
-        while ( strtotime($date) < strtotime($now) )
+        $date = $max ?: $from;
+        
+        while ( strtotime($date) < strtotime($to) )
         {
-            $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($date)) . ' +1 hour') );
-            
             $table->insert([
                 'day'           => date('d', strtotime($date)),
                 'hour'          => date('H', strtotime($date)),
@@ -36,6 +55,8 @@ class StatsSeeder extends Seeder
                 'label_id'      => random_int(0,10),
                 'value'         => random_int(0,1000),
             ]);
+            
+            $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($date)) . ' +1 hour') );
         }
     }
 }
