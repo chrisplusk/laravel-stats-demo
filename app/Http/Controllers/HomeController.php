@@ -81,6 +81,33 @@ class HomeController extends Controller
         return $query;
     }
     
+    private function unionSelectedMonths($query)
+    {
+        $selected = $this->getSelection();
+
+        if (false === empty($selected->start_date) && false === empty($selected->end_date))
+        {
+            $date   = date('Y-m-01 H:i:s',strtotime($selected->start_date));
+            $end    = date('Y-m-01 H:i:s',strtotime($selected->end_date));
+        }
+        else
+        {
+            $date   = date('Y-m-01 00:00:00');
+            $end    = date('Y-m-01 00:00:00');
+        }
+
+        $union = $query($date);
+
+        while ( strtotime($date) < strtotime($end) )
+        {
+            $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($date)) . ' +1 month') );
+
+            $union->unionAll( $query($date) );
+        }
+        
+        return $union;
+    }
+    
     public function table()
     {
         if (false === empty(Input::get('sortBy')))
@@ -96,7 +123,9 @@ class HomeController extends Controller
             }
         }
         
-        $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m')) );
+        $stats = $this->unionSelectedMonths(function ($date) {
+            return $this->applyFilter( DB::table('stats_'.date('Y',strtotime($date)).'_'.date('m',strtotime($date))) );
+        });
         
         if (Session::has('sortBy') && Session::has('sortDir'))
         {
@@ -158,15 +187,20 @@ class HomeController extends Controller
     
     public function doughnut()
     {
-        $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m'))
-            ->select('category_id', DB::raw('SUM(value) as value'))
-            ->groupBy('category_id') )
-            ->get();
+        $unions = $this->unionSelectedMonths(function ($date) {
+            return $this->applyFilter( DB::table('stats_'.date('Y',strtotime($date)).'_'.date('m',strtotime($date)))
+                ->select('category_id', DB::raw('SUM(value) as value'))
+                ->groupBy('category_id') );
+        });
+        
+        $unionsSql  = $unions->toSql();
+        $stats      = DB::table(DB::raw("($unionsSql) as unions GROUP BY category_id"))->mergeBindings($unions);
+        $stats->select('category_id', DB::raw('SUM(value) as value'));
 
         $labels = [];
         $values = [];
         
-        foreach($stats as $row)
+        foreach($stats->get() as $row)
         {
             $labels[] = $row->category_id;
             $values[] = $row->value;
@@ -180,15 +214,20 @@ class HomeController extends Controller
     
     public function bar()
     {
-        $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m'))
-            ->select('label_id', DB::raw('SUM(value) as value'))
-            ->groupBy('label_id') )
-            ->get();
+        $unions = $this->unionSelectedMonths(function ($date) {
+            return $this->applyFilter( DB::table('stats_'.date('Y',strtotime($date)).'_'.date('m',strtotime($date)))
+                ->select('label_id', DB::raw('SUM(value) as value'))
+                ->groupBy('label_id') );
+        });
 
+        $unionsSql  = $unions->toSql();
+        $stats      = DB::table(DB::raw("($unionsSql) as unions GROUP BY label_id"))->mergeBindings($unions);
+        $stats->select('label_id', DB::raw('SUM(value) as value'));
+        
         $labels = [];
         $values = [];
         
-        foreach($stats as $row)
+        foreach($stats->get() as $row)
         {
             $labels[] = $row->label_id;
             $values[] = $row->value;
@@ -202,12 +241,17 @@ class HomeController extends Controller
     
     public function line()
     {
-        $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m')) )->get();
+        $stats = $this->unionSelectedMonths(function ($date) {
+            return $this->applyFilter( DB::table('stats_'.date('Y',strtotime($date)).'_'.date('m',strtotime($date)))
+            ->select('day', DB::raw('SUM(value) as value'))
+            ->groupBy('day') );
+        });
+        
 
         $labels = [];
         $values = [];
         
-        foreach($stats as $row)
+        foreach($stats->get() as $row)
         {
             $labels[] = $row->day;
             $values[] = $row->value;
