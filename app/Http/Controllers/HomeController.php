@@ -202,7 +202,9 @@ class HomeController extends Controller
     
     public function line()
     {
-        $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m')) )->get();
+        $stats = $this->applyFilter( DB::table('stats_'.date('Y').'_'.date('m'))
+            ->select('day', DB::raw('SUM(value) as value'))
+            ->groupBy('day') )->get();
 
         $labels = [];
         $values = [];
