@@ -44,7 +44,7 @@ class HomeController extends Controller
     
     public function table()
     {
-        $stats = \App\Stats::select( $this->getSelection() )->get();
+        $stats = \App\Stats::apply( $this->getSelection() )->all();
         
         if (false === empty(Input::get('sortBy')))
         {
@@ -112,7 +112,7 @@ class HomeController extends Controller
     
     public function doughnut()
     {
-        $stats = \App\Stats::select( $this->getSelection() )->getValueGroupedByCategory();
+        $stats = \App\Stats::apply( $this->getSelection() )->valuePerCategory();
 
         $labels = [];
         $values = [];
@@ -131,7 +131,7 @@ class HomeController extends Controller
     
     public function bar()
     {
-        $stats = \App\Stats::select( $this->getSelection() )->getValueGroupedByLabel();
+        $stats = \App\Stats::apply( $this->getSelection() )->valuePerLabel();
         
         $labels = [];
         $values = [];
@@ -150,7 +150,7 @@ class HomeController extends Controller
     
     public function line()
     {
-        $stats = \App\Stats::select( $this->getSelection() )->getValueGroupedByDay();
+        $stats = \App\Stats::apply( $this->getSelection() )->valuePerDay();
         
         $labels = [];
         $values = [];

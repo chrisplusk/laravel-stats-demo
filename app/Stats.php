@@ -13,12 +13,12 @@ class Stats
         $this->selection = $selection;
     }
     
-    public static function select($selection)
+    public static function apply($selection)
     {
         return new self($selection);
     }
     
-    public function get()
+    public function all()
     {
         $stats = $this->unionMonths(function ($date) {
             return $this->filter( DB::table( 'stats_'.date('Y_m',strtotime($date)) ) );
@@ -27,7 +27,7 @@ class Stats
         return $stats;
     }
     
-    public function getValueGroupedByCategory()
+    public function valuePerCategory()
     {
         $unions = $this->unionMonths(function ($date) {
             return $this->filter(
@@ -44,7 +44,7 @@ class Stats
         return $stats;
     }
     
-    public function getValueGroupedByLabel()
+    public function valuePerLabel()
     {
         $unions = $this->unionMonths(function ($date) {
             return $this->filter(
@@ -60,7 +60,7 @@ class Stats
         return $stats;
     }
     
-    public function getValueGroupedByDay()
+    public function valuePerDay()
     {
         $stats = $this->unionMonths(function ($date) {
             return $this->filter(
