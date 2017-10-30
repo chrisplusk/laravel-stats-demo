@@ -17,7 +17,7 @@ class StatsSeeder extends Seeder
         
         while ( strtotime($mm) < strtotime($now) )
         {
-            $to     = date('Y-m-01 00:00:00', strtotime(date('Y-m-01 00:00:00', strtotime($mm)) . ' +1 month') );
+            $to     = date('Y-m-01 00:00:00', strtotime($mm . ' +1 month') );
             
             if ($to > $now)
             {
@@ -26,13 +26,13 @@ class StatsSeeder extends Seeder
             
             $this->fillMonth($mm, $to);
             
-            $mm     = date('Y-m-01 00:00:00', strtotime(date('Y-m-01 00:00:00', strtotime($mm)) . ' +1 month') );
+            $mm     = date('Y-m-01 00:00:00', strtotime($mm . ' +1 month') );
         }
     }
     
     private function fillMonth($from, $to)
     {
-        $stats_yyyy_mm = 'stats_'.date('Y', strtotime($from)).'_'.date('m', strtotime($from));
+        $stats_yyyy_mm = 'stats_'.date('Y_m', strtotime($from));
         
         if (false === Schema::hasTable($stats_yyyy_mm)) {
             DB::statement('CREATE TABLE '.$stats_yyyy_mm.' LIKE stats_yyyy_mm');
@@ -56,7 +56,7 @@ class StatsSeeder extends Seeder
                 'value'         => random_int(0,1000),
             ]);
             
-            $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($date)) . ' +1 hour') );
+            $date = date('Y-m-d H:i:s', strtotime($date . ' +1 hour') );
         }
     }
 }
