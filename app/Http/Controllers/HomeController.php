@@ -66,8 +66,8 @@ class HomeController extends Controller
 
         return view('home/partials/table', [
                                 'stats' => $stats->get(),
-                                'sortBy' => Session::has('sortBy') ? Session::get('sortBy') : '',
-                                'sortDir' => Session::has('sortDir') ? Session::get('sortDir') : ''
+                                'sortBy' => Session::has('sortBy') ? Session::get('sortBy') : 'date',
+                                'sortDir' => Session::has('sortDir') ? Session::get('sortDir') : 'asc'
                             ]);
     }
     
