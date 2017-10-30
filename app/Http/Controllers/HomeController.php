@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\DB;
-
 use \Input;
 
 use \Session;
@@ -44,72 +42,10 @@ class HomeController extends Controller
         };
     }
     
-    private function applyFilter($query)
-    {
-        $selected = $this->getSelection();
-        
-        if (false === empty($selected->start_date))
-        {
-            $query->where('date', '>=', date('Y-m-d H:i:s', strtotime($selected->start_date)));
-        }
-        if (false === empty($selected->end_date))
-        {
-            $query->where('date', '<=', date('Y-m-d 23:59:59', strtotime($selected->end_date)));
-        }
-        
-        if ($selected->client_id != 0)
-        {
-            
-            $query->where('client_id', '=', $selected->client_id);
-        }
-        
-        if (is_array($selected->categories) && false == empty($selected->categories))
-        {
-            $query->whereIn('category_id', $selected->categories);
-        }
-        
-        if (is_array($selected->labels) && false == empty($selected->labels))
-        {
-            $query->whereIn('label_id', $selected->labels);
-        }
-        
-        if (false === empty($selected->value))
-        {
-            $query->where('value', $selected->value_equals == 'ltoe' ? '<=' : '>=', $selected->value);
-        }
-        
-        return $query;
-    }
-    
-    private function unionSelectedMonths($query)
-    {
-        $selected = $this->getSelection();
-
-        if (false === empty($selected->start_date) && false === empty($selected->end_date))
-        {
-            $date   = date('Y-m-01 H:i:s', strtotime($selected->start_date));
-            $end    = date('Y-m-01 H:i:s', strtotime($selected->end_date));
-        }
-        else
-        {
-            $date   = date('Y-m-01 00:00:00');
-            $end    = date('Y-m-01 00:00:00');
-        }
-
-        $union = $query($date);
-
-        while ( strtotime($date) < strtotime($end) )
-        {
-            $date = date('Y-m-d H:i:s', strtotime($date . ' +1 month') );
-
-            $union->unionAll( $query($date) );
-        }
-        
-        return $union;
-    }
-    
     public function table()
     {
+        $stats = \App\Stats::select( $this->getSelection() )->get();
+        
         if (false === empty(Input::get('sortBy')))
         {
             if (Session::has('sortBy') && Session::get('sortBy') == Input::get('sortBy'))
@@ -122,10 +58,6 @@ class HomeController extends Controller
                 Session::put('sortDir', 'asc');
             }
         }
-        
-        $stats = $this->unionSelectedMonths(function ($date) {
-            return $this->applyFilter( DB::table( 'stats_'.date('Y_m',strtotime($date)) ) );
-        });
         
         if (Session::has('sortBy') && Session::has('sortDir'))
         {
@@ -141,20 +73,13 @@ class HomeController extends Controller
     
     public function filter()
     {
-        $clients = DB::table('stats_'.date('Y_m'))
-            ->select('client_id')
-            ->groupBy('client_id')
-            ->get();
-        $categories = DB::table('stats_'.date('Y_m'))
-            ->select('category_id')
-            ->groupBy('category_id')
-            ->get();
-        $labels = DB::table('stats_'.date('Y_m'))
-            ->select('label_id')
-            ->groupBy('label_id')
-            ->get();
+        $selected   = $this->getSelection();
         
-        $selected = $this->getSelection();
+        $clients    = \App\Stats::getClients();
+        
+        $categories = \App\Stats::getCategories();
+        
+        $labels     = \App\Stats::getLabels();
         
         return view('home/partials/filter', [
                                 'clients'               => $clients,
@@ -187,15 +112,7 @@ class HomeController extends Controller
     
     public function doughnut()
     {
-        $unions = $this->unionSelectedMonths(function ($date) {
-            return $this->applyFilter( DB::table( 'stats_'.date('Y_m',strtotime($date)) )
-                ->select('category_id', DB::raw('SUM(value) as value'))
-                ->groupBy('category_id') );
-        });
-        
-        $unionsSql  = $unions->toSql();
-        $stats      = DB::table(DB::raw("($unionsSql) as unions GROUP BY category_id"))->mergeBindings($unions);
-        $stats->select('category_id', DB::raw('SUM(value) as value'));
+        $stats = \App\Stats::select( $this->getSelection() )->getValueGroupedByCategory();
 
         $labels = [];
         $values = [];
@@ -214,15 +131,7 @@ class HomeController extends Controller
     
     public function bar()
     {
-        $unions = $this->unionSelectedMonths(function ($date) {
-            return $this->applyFilter( DB::table( 'stats_'.date('Y_m',strtotime($date)) )
-                ->select('label_id', DB::raw('SUM(value) as value'))
-                ->groupBy('label_id') );
-        });
-
-        $unionsSql  = $unions->toSql();
-        $stats      = DB::table(DB::raw("($unionsSql) as unions GROUP BY label_id"))->mergeBindings($unions);
-        $stats->select('label_id', DB::raw('SUM(value) as value'));
+        $stats = \App\Stats::select( $this->getSelection() )->getValueGroupedByLabel();
         
         $labels = [];
         $values = [];
@@ -241,13 +150,8 @@ class HomeController extends Controller
     
     public function line()
     {
-        $stats = $this->unionSelectedMonths(function ($date) {
-            return $this->applyFilter( DB::table( 'stats_'.date('Y_m',strtotime($date)) )
-            ->select('day', DB::raw('SUM(value) as value'))
-            ->groupBy('day') );
-        });
+        $stats = \App\Stats::select( $this->getSelection() )->getValueGroupedByDay();
         
-
         $labels = [];
         $values = [];
         
