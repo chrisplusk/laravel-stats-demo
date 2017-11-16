@@ -13,7 +13,7 @@
     			Add User
     		</div>
     		<div class="panel-body">
-				{{ Form::model($user, ['url' => route('users.store'), 'method' => 'PUT' ]) }}
+				{{ Form::model($user, ['url' => route('users.store') .'/'. $user->id , 'method' => 'PUT' ]) }}
 					@include('users._form')
 				{{ Form::close() }}
     		</div>

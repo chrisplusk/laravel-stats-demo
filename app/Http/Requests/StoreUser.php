@@ -15,7 +15,7 @@ class StoreUser extends FormRequest
      */
     public function authorize()
     {
-        $user = User::find($this->route('user'));
+        $user = $this->route('user');
         
         if ($user)
         {
