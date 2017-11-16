@@ -10,7 +10,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Users
-			@can('create', App\User::class)
+			@can('create', \App\User::class)
                 <a href="{{ route('users.create') }}" class="btn btn-success btn-xs">Add User</a>
             @endcan
 		</div>
