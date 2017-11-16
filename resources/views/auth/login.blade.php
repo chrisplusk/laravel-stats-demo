@@ -60,6 +60,9 @@
                                 </a>
                             </div>
                         </div>
+                        Try: <br />
+                            guest / guest <br />
+                            admin / admin
                     </form>
                 </div>
             </div>
