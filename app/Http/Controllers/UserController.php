@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
 
 class UserController extends Controller
 {
@@ -52,7 +53,7 @@ class UserController extends Controller
                                     ]);
     }
 
-    public function update(StoreUser $request, $id)
+    public function update(UpdateUser $request, $user)
     {
         //
     }
