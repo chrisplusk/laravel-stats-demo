@@ -55,7 +55,11 @@ class UserController extends Controller
 
     public function update(UpdateUser $request, $user)
     {
-        //
+        $user->update($request->all());
+
+        session()->flash('status', 'User updated successfully');
+        
+        return redirect()->route('users.index');
     }
 
     public function destroy($user)
