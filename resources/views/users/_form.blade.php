@@ -24,5 +24,10 @@
 </div>
 
 <div class="form-group">
+	{{ Form::label('password_confirmation', 'Password') }} <em>*</em>
+	{{ Form::password('password_confirmation', ['class' => 'form-control', 'id' => 'password-confirm']) }}
+</div>
+
+<div class="form-group">
 	{{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
 </div>
