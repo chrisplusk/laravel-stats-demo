@@ -16,8 +16,17 @@ class StoreUser extends FormRequest
     public function authorize()
     {
         $user = User::find($this->route('user'));
-
-        return $user && $this->user()->can('update', $user);
+        
+        if ($user)
+        {
+            return $this->user()->can('update', $user);
+        }
+        else
+        {
+            return $this->user()->can('create', User::class);
+        }
+        
+        return false;
     }
 
     /**
@@ -28,7 +37,9 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255|unique:users',
+            'password'  => 'required|string|min:5|confirmed',
         ];
     }
 }

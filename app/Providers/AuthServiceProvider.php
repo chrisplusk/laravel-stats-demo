@@ -29,11 +29,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('create-users', function ($user, User $model) {
-            var_dump("!!");die;
-            return true;
-        });
-        
-//        Gate::resource('users', 'UserPolicy');
+        Gate::resource('users', 'UserPolicy');
     }
 }
