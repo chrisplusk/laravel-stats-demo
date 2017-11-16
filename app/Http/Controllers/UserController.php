@@ -57,9 +57,9 @@ class UserController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function destroy($user)
     {
-        if (User::findOrFail($id)->delete()) {
+        if ($user->delete()) {
             session()->flash('status', 'User deleted successfully');
         } else {
             session()->flash('status', 'Unable to delete user. Please try again');
