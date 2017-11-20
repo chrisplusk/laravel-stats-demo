@@ -36,7 +36,8 @@
 
                     <div class="form-group">
                         {{ Form::label('public', 'Public') }}
-                        {{ Form::checkbox('public') }}
+                        {{ Form::hidden('public',0) }}
+                        {{ Form::checkbox('public',1) }}
                     </div>
 
                     <div class="form-group">
