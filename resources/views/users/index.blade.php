@@ -29,6 +29,7 @@
                     </thead>
                     <tbody>
                         @foreach($users as $user)
+                        @can('view', $user)
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
@@ -39,16 +40,19 @@
                             @can('update', $user)
                                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success btn-xs">Edit</a>
                                 <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-xs">View</a>
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                    <button class="btn btn-danger btn-xs">
-                                        <span>DELETE</span>
-                                    </button>
-                                </form>
+                                @can('delete', $user)
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
+                                            <span>DELETE</span>
+                                        </button>
+                                    </form>
+                                @endcan
                             @endcan
                             </td>
                         </tr>
+                        @endcan
                         @endforeach
                     </tbody>
                 </table>
