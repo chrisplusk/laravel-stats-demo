@@ -35,6 +35,11 @@
                     </div>
 
                     <div class="form-group">
+                        {{ Form::label('public', 'Public') }}
+                        {{ Form::checkbox('public') }}
+                    </div>
+
+                    <div class="form-group">
                         {{ Form::label('password', 'Password') }} <em>*</em>
                         {{ Form::password('password', ['class' => 'form-control', 'id' => 'password']) }}
                     </div>

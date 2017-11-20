@@ -9,17 +9,16 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-// @TODO: 
-//    public function before($user, $ability)
-//    {
-//        if ($user->isSuperAdmin()) {
-//            return true;
-//        }
-//    }
+    public function before($user, $ability)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
 
     public function view(User $user, User $model)
     {
-        return $user->id == $model->id;
+        return $model->public || $user->id === $model->id;
     }
 
     public function create(User $user)
@@ -29,11 +28,11 @@ class UserPolicy
 
     public function update(User $user, User $model)
     {
-        return $user->admin || $user->id === $model->id;
+        return ($user->admin && $model->public) || $user->id === $model->id;
     }
 
     public function delete(User $user, User $model)
     {
-        //
+        return ($user->admin && $model->public) || $user->id === $model->id;
     }
 }
