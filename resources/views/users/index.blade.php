@@ -42,7 +42,7 @@
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
-                                    <button class="btn btn-danger btn-xs">
+                                    <button class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">
                                         <span>DELETE</span>
                                     </button>
                                 </form>
