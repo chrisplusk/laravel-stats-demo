@@ -11,7 +11,7 @@
                         <div class='input-group date' id='datetimepicker_start'>
                             <input name="start_date" type='text' class="form-control" value="{{ $selected_start_date }}" />
                             <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
                             </span>
                         </div>
                     </div>
@@ -21,7 +21,7 @@
                         <div class='input-group date' id='datetimepicker_end'>
                             <input name="end_date" type='text' class="form-control" value="{{ $selected_end_date }}" />
                             <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
                             </span>
                         </div>
                     </div>
