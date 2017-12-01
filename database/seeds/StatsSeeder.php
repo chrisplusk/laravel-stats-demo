@@ -11,7 +11,7 @@ class StatsSeeder extends Seeder
      */
     public function run()
     {
-        $now    = date('Y-m-d H:i:s');
+        $now    = date('Y-m-d H:00:00');
 
         $mm     = date('Y-01-01 00:00:00');
         
@@ -42,6 +42,9 @@ class StatsSeeder extends Seeder
         
         $max = $table->max('date');
         
+        if (strtotime($max) == strtotime($to))
+            return;
+
         $date = $max ?: $from;
 
         while ( strtotime($date) <= strtotime($to) )
