@@ -17,7 +17,7 @@ class StatsSeeder extends Seeder
         
         while ( strtotime($mm) < strtotime($now) )
         {
-            $to     = date('Y-m-01 00:00:00', strtotime($mm . ' +1 month') );
+            $to     = date('Y-m-d 23:00:00', strtotime($mm . ' +1 month -1 day') );
             
             if ($to > $now)
             {
@@ -43,8 +43,8 @@ class StatsSeeder extends Seeder
         $max = $table->max('date');
         
         $date = $max ?: $from;
-        
-        while ( strtotime($date) < strtotime($to) )
+
+        while ( strtotime($date) <= strtotime($to) )
         {
             $table->insert([
                 'day'           => date('d', strtotime($date)),
