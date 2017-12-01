@@ -8,11 +8,13 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    
+                    <div class="alert alert-dismissible" role="alert" style="display: none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p style="max-height: 100px;  overflow-y: auto;"></p>
+                    </div>
                     
                     <div id="filter" style="display: none;">
                         
@@ -235,8 +237,17 @@
             $('#seedbutton').click(function () {
                 $.ajax({
                     url: "home/seed"
-                }).done(function( data ) {
-                    //
+                }).done(function(data) {
+                    $('.alert').toggleClass('alert-success', true );
+                    $('.alert').toggleClass('alert-danger', false );
+                    $('.alert p').html(data);
+                    setTimeout(function() { $('.alert').fadeOut(); }, 1000);
+                }).fail(function( data ) {
+                    $('.alert').toggleClass('alert-success', false );
+                    $('.alert').toggleClass('alert-danger', true );
+                    $('.alert p').html(data.responseText);
+                }).always(function(data) {
+                    $('.alert').toggle(true);
                 });
                 
                 table_ajax();

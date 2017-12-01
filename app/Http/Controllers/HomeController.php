@@ -22,11 +22,30 @@ class HomeController extends Controller
     
     public function seed()
     {
-        $exitCode = \Artisan::call('db:seed', [
-            '--class' => 'StatsSeeder'
-        ]);
+        // $exitCode   = '';
+        // $error      = '';
+        $status     = 200;
+        $msg        = 'Stats seeded successfully';
+
+        try
+        {
+            $exitCode = \Artisan::call('db:seed', [
+                '--class' => 'StatsSeeder'
+            ]);
+        }
+        catch (\Exception $e)
+        {
+            $msg = 'Error: ' . $e;
+            $status = 500;
+        }
         
-        return [$exitCode];
+        if ($exitCode !== 0 && $status !== 500)
+        {
+                $msg = 'Error: ' . $exitCode;
+                $status = 400;
+        }
+
+        return response([$msg], $status);
     }
     
     private function getSelection()
