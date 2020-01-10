@@ -47,4 +47,4 @@ or login (default users: admin/admin, guest/guest)
 click ‘seed’ the first time to seed the statistics database or when you want new additional data to be generated
 
 
-Play around with the filter settings or ‘users’ view (toolbar)
+Play around with the filter settings (click ‘filter’ button to expand, then ‘Apply’) or ‘users’ view (toolbar)
